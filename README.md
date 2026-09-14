@@ -1,96 +1,143 @@
-# Sá Conecta — FastAPI, SQLite e administração
+# Sá Conecta
 
-**Já tem a versão anterior funcionando? Leia `ATUALIZAR_ADMIN.md` primeiro.**
-Ele explica como atualizar preservando o banco e configurar seu login.
+Plataforma colaborativa para reunir contatos de comércios e serviços de Coronel João Sá — BA.
 
-Esta versão conecta a interface ao servidor e ao banco. Mantém HTML, CSS e
-JavaScript separados, com o visual da primeira versão.
+Projeto desenvolvido para a **Atividade Extensionista II: Tecnologia Aplicada à Inclusão Digital — Projeto**, do curso de **Análise e Desenvolvimento de Sistemas da UNINTER**.
 
-## Executar no Windows
+## Objetivo
 
-1. Extraia a pasta `sa-conecta` do ZIP. Não execute dentro do arquivo compactado.
-2. Abra no VS Code a pasta que contém `main.py` e `database.py`.
-3. Se já criou `.venv` na sua pasta de projeto, copie o conteúdo de `sa-conecta`
-   para ela, mantendo `.venv`. Aceite substituir o HTML/JS anteriores apenas
-   se não tiver alterações próprias; faça uma cópia antes se tiver editado.
-4. Se precisar criar o ambiente nesta nova pasta, execute `py -m venv .venv`.
-5. No terminal PowerShell, execute:
+O Sá Conecta facilita a busca por informações de estabelecimentos e profissionais da cidade. A comunidade pode sugerir novos contatos, que ficam pendentes até serem revisados na área administrativa.
+
+O projeto está relacionado aos seguintes Objetivos de Desenvolvimento Sustentável:
+
+- ODS 8 — Trabalho decente e crescimento econômico;
+- ODS 9 — Indústria, inovação e infraestrutura;
+- ODS 11 — Cidades e comunidades sustentáveis.
+
+## Funcionalidades
+
+- catálogo de comércios e serviços;
+- pesquisa por nome, serviço, endereço ou palavra-chave;
+- filtro por categoria;
+- formulário colaborativo para sugerir contatos;
+- armazenamento das sugestões no SQLite;
+- área administrativa com login;
+- edição, aprovação, rejeição e exclusão de contatos;
+- publicação no catálogo somente após aprovação;
+- exibição de telefone e WhatsApp para contatos autorizados.
+
+## Tecnologias utilizadas
+
+- Python;
+- FastAPI;
+- SQLite;
+- Jinja2;
+- HTML;
+- CSS;
+- JavaScript.
+
+## Estrutura do projeto
+
+```text
+sa-conecta/
+├── static/
+│   ├── admin.css
+│   ├── admin.js
+│   ├── script.js
+│   └── style.css
+├── templates/
+│   ├── admin-login.html
+│   ├── admin.html
+│   └── index.html
+├── tests/
+│   ├── test_admin.py
+│   └── test_api.py
+├── admin.py
+├── configurar_admin.py
+├── database.py
+├── main.py
+├── requirements-dev.txt
+├── requirements.txt
+└── security.py
+```
+
+## Como executar no Windows
+
+Abra o PowerShell na pasta que contém o arquivo `main.py`.
+
+Crie o ambiente virtual:
+
+```powershell
+py -m venv .venv
+```
+
+Instale as dependências:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Inicie o servidor:
+
+```powershell
 .\.venv\Scripts\python.exe -m uvicorn main:app --reload
 ```
 
-6. Aguarde `Application startup complete` e abra http://127.0.0.1:8000.
-   Não use Live Server nem abra o HTML diretamente nesta versão.
-7. Para parar, use Ctrl+C no terminal. Para iniciar novamente, repita apenas
-   o comando do Uvicorn. Mantenha o terminal aberto enquanto usar a página.
+Acesse o catálogo em:
 
-Se a porta 8000 estiver ocupada, acrescente `--port 8001` ao comando e use
-http://127.0.0.1:8001. Se aparecer `Could not import module main`, confira
-se o terminal está na pasta que contém `main.py`.
-
-## O que já funciona
-
-- O servidor entrega HTML, CSS e JavaScript pela mesma origem.
-- O SQLite cria `banco.db` na pasta de `database.py`, sem instalação separada.
-- Seis estabelecimentos fictícios são inseridos apenas uma vez.
-- A página obtém categorias e estabelecimentos pela API; busca e filtros
-  são aplicados no JavaScript sobre a lista de aprovados retornada pelo servidor.
-- O formulário grava sugestões reais no banco local como `pending`.
-- Nome, categoria, telefone, endereço, descrição e consentimento são validados
-  também no servidor. Não é possível enviar `status=approved` no formulário/API.
-- Sugestões pendentes não são retornadas pelo catálogo nem pelo endpoint de detalhe.
-- Repetir o mesmo envio após uma falha de rede não duplica a sugestão enquanto
-  a página mantém o mesmo identificador e os mesmos dados.
-- Os contatos aprovados podem mostrar telefone e link para WhatsApp quando
-  o responsável tiver marcado que o número recebe mensagens.
-
-## Testar manualmente
-
-Abra o site, busque `saude` (sem acento), escolha categorias e abra detalhes.
-Envie uma sugestão de teste: anote o protocolo exibido. A sugestão não aparecerá
-no catálogo porque está pendente. Pare e reinicie o servidor: o banco permanece.
-Para confirmar a gravação sem instalar ferramentas adicionais, execute na pasta
-do projeto (também funciona com o servidor parado):
-
-```powershell
-.\.venv\Scripts\python.exe conferir_pendentes.py
+```text
+http://127.0.0.1:8000
 ```
 
-Não apague `banco.db` para reiniciar: isso apagaria os cadastros. O ZIP não inclui
-banco pré-criado nem ambiente virtual. Os exemplos são identificados em cada card
-e não têm números de telefone. `SA_SEED_DEMO=0` desativa a inserção de exemplos
-em um banco novo; não remove exemplos já existentes.
+Para encerrar o servidor, pressione `Ctrl + C` no terminal.
 
-## Administração
+## Configuração da área administrativa
 
-Execute `configurar_admin.py` pelo Python da sua `.venv` para definir usuário
-e senha. Entre em http://127.0.0.1:8000/admin para revisar, editar, aprovar,
-rejeitar e excluir contatos. As ações exigem sessão e proteção CSRF no servidor.
-Consulte `ATUALIZAR_ADMIN.md` para o passo a passo e redefinição de senha.
-A publicação na internet é uma etapa posterior; o uso atual é local.
+Antes do primeiro acesso, crie o usuário administrador:
 
-## Arquivos
+```powershell
+.\.venv\Scripts\python.exe configurar_admin.py
+```
 
-- `main.py`: rotas HTTP e validação de entrada/saída.
-- `database.py`: esquema, exemplos e operações SQLite parametrizadas.
-- `templates/index.html`: interface servida por Jinja2.
-- `static/style.css`: estilos preservados da primeira versão.
-- `static/script.js`: busca, modais e comunicação com a API.
-- `tests/test_api.py`: integração com banco temporário, sem alterar `banco.db`.
+Depois, acesse:
 
-Para executar os testes opcionais:
+```text
+http://127.0.0.1:8000/admin
+```
+
+Para redefinir as credenciais:
+
+```powershell
+.\.venv\Scripts\python.exe configurar_admin.py --redefinir
+```
+
+Nenhuma senha padrão é incluída no projeto.
+
+## Testes
+
+Instale as dependências de desenvolvimento:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-Verificação desta entrega: testes de API e banco temporário executados com
-sucesso, incluindo autenticação, autorização e moderação. Sintaxe JavaScript
-e referências de arquivos também verificadas. Sem inspeção visual em navegador.
+Execute os testes:
 
-Referências de implementação: [templates e arquivos estáticos](https://fastapi.tiangolo.com/advanced/templates/)
-e [inicialização com lifespan](https://fastapi.tiangolo.com/advanced/events/),
-na documentação oficial do FastAPI.
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q
+```
+
+Resultado verificado durante o desenvolvimento: **13 testes e 9 subtestes aprovados**.
+
+## Observações
+
+- O arquivo `banco.db` é criado automaticamente na primeira execução.
+- Os registros de demonstração são identificados como exemplos fictícios.
+- Sugestões enviadas pela comunidade entram com situação pendente.
+- O banco de dados, o ambiente virtual e possíveis arquivos de configuração local não são enviados ao repositório.
+- Não utilize o Live Server nem abra o HTML diretamente; a interface deve ser acessada pelo endereço do FastAPI.
+
+## Autor
+
+**Gabriel de Jesus Santos**  
+Curso Superior de Tecnologia em Análise e Desenvolvimento de Sistemas — UNINTER
