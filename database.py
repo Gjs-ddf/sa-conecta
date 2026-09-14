@@ -11,13 +11,13 @@ Este arquivo:
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
-
+import os
 
 # Caminho da pasta em que este arquivo está localizado.
 BASE_DIR = Path(__file__).resolve().parent
 
 # O banco será criado nessa mesma pasta.
-DEFAULT_DB = BASE_DIR / "banco.db"
+DEFAULT_DB = Path(os.getenv("SA_DB_PATH", BASE_DIR / "banco.db"))
 
 
 # Categorias disponíveis no formulário e no catálogo.
