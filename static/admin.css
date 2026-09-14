@@ -1,0 +1,401 @@
+/* =========================================================
+   Controles gerais
+   ========================================================= */
+
+/* Estende a identidade visual do guia sem alterar o CSS público. */
+button:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+
+/* =========================================================
+   Login
+   ========================================================= */
+
+.login-shell {
+  width: min(460px, calc(100% - 32px));
+  margin: 8vh auto;
+}
+
+.login-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 30px;
+  margin: 30px 0 16px;
+}
+
+.login-card h1 {
+  font-size: 1.9rem;
+  letter-spacing: -.035em;
+  margin: 12px 0;
+}
+
+.login-card form {
+  margin-top: 24px;
+}
+
+.login-card label,
+.admin-form > label,
+.admin-toolbar label {
+  display: block;
+  font-size: .875rem;
+  font-weight: 650;
+  margin: 16px 0 6px;
+}
+
+.login-card input,
+.admin-form input:not([type=checkbox]),
+.admin-form select,
+.admin-form textarea,
+.admin-toolbar input {
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid #b9c7d5;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--ink);
+  background: white;
+}
+
+.login-card .button {
+  width: 100%;
+  margin-top: 22px;
+}
+
+.login-help {
+  font-size: .875rem;
+  color: var(--muted);
+  margin-top: 22px;
+}
+
+
+/* =========================================================
+   Feedback / mensagens
+   ========================================================= */
+
+.feedback {
+  padding: 12px 16px;
+  border-radius: 9px;
+  background: #e7f4ee;
+  color: #175538;
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+
+.feedback[data-kind="error"] {
+  background: #fff0ed;
+  color: #922919;
+  border: 1px solid #f1c0b7;
+}
+
+
+/* =========================================================
+   Área administrativa
+   ========================================================= */
+
+.admin-main {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.admin-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.admin-heading h1 {
+  font-size: 2rem;
+  letter-spacing: -.035em;
+  margin: 10px 0;
+}
+
+
+/* =========================================================
+   Filtros de status
+   ========================================================= */
+
+.status-filters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 30px 0 24px;
+}
+
+.status-filter {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: left;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status-filter strong {
+  font-size: 1.75rem;
+  color: var(--ink);
+}
+
+.status-filter[aria-pressed=true] {
+  border: 2px solid var(--blue);
+  padding: 15px 19px;
+  background: #eaf1ff;
+  color: var(--blue);
+}
+
+
+/* =========================================================
+   Barra de ferramentas administrativa
+   ========================================================= */
+
+.admin-toolbar {
+  display: flex;
+  gap: 20px;
+  align-items: end;
+  margin-bottom: 20px;
+}
+
+.admin-toolbar > div {
+  flex: 1;
+}
+
+.admin-toolbar label {
+  margin-top: 0;
+}
+
+
+/* =========================================================
+   Registros
+   ========================================================= */
+
+.admin-records {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.record {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.record-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 16px;
+}
+
+.record h2 {
+  font-size: 1.2rem;
+  overflow-wrap: anywhere;
+}
+
+.record-meta {
+  font-size: .875rem;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+
+/* =========================================================
+   Status dos registros
+   ========================================================= */
+
+.record-status {
+  font-size: .8125rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #edf1f5;
+  white-space: nowrap;
+}
+
+.record-status[data-status="pending"] {
+  background: #fff2cd;
+  color: #735300;
+}
+
+.record-status[data-status="approved"] {
+  background: #e4f4ec;
+  color: #1b6243;
+}
+
+.record-status[data-status="rejected"] {
+  background: #ffebe6;
+  color: #963723;
+}
+
+
+/* =========================================================
+   Detalhes dos registros
+   ========================================================= */
+
+.record-details {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 7px 14px;
+  font-size: .9375rem;
+  margin: 20px 0;
+}
+
+.record-details dt {
+  color: var(--muted);
+}
+
+.record-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+
+/* =========================================================
+   Ações dos registros
+   ========================================================= */
+
+.record-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+
+/* =========================================================
+   Botão de ação perigosa
+   ========================================================= */
+
+.danger {
+  background: #a62e22;
+  color: white;
+}
+
+.danger:hover {
+  background: #802218;
+}
+
+
+/* =========================================================
+   Formulários administrativos
+   ========================================================= */
+
+.admin-form .check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 400;
+}
+
+.admin-form small {
+  font-size: .8125rem;
+  color: var(--muted);
+}
+
+.admin-form .check input {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* =========================================================
+   Estados auxiliares
+   ========================================================= */
+
+.admin-main .empty-state h2 {
+  font-size: 1.25rem;
+}
+
+#confirm-description {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+#edit-note {
+  font-size: .875rem;
+}
+
+
+/* =========================================================
+   Responsividade
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  /* Cabeçalho administrativo */
+  .admin-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  /* Filtros de status */
+  .status-filters {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  /* Barra de ferramentas */
+  .admin-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .admin-toolbar button {
+    align-self: start;
+  }
+
+  /* Registros */
+  .record {
+    padding: 18px;
+  }
+
+  .record-heading {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .record-details {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .record-details dd {
+    margin-bottom: 8px;
+  }
+
+  .record-actions .button {
+    flex: 1;
+    min-width: 110px;
+  }
+
+  /* Login */
+  .login-card {
+    padding: 24px;
+  }
+
+  .login-shell {
+    margin-top: 5vh;
+  }
+
+  /* Navegação */
+  .header nav > a {
+    display: inline;
+    font-size: .8125rem;
+  }
+
+  .header nav {
+    gap: 10px;
+  }
+}

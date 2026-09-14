@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Entrar · Administração Sá Conecta</title>
+
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/admin.css">
+  <script src="/static/admin.js" defer></script>
+</head>
+
+<body data-page="login">
+  <!-- Área de login administrativo -->
+  <main class="login-shell">
+    <a class="brand" href="/" aria-label="Voltar ao guia">
+      <span class="brand-symbol" aria-hidden="true">Sá</span>
+
+      <span>
+        Sá <strong>Conecta</strong>
+        <small>Coronel João Sá · Bahia</small>
+      </span>
+    </a>
+
+    <section class="login-card" aria-labelledby="login-title">
+      <p class="eyebrow">ADMINISTRAÇÃO</p>
+      <h1 id="login-title">Bem-vindo de volta.</h1>
+
+      <p class="muted">
+        Entre para revisar os contatos da comunidade.
+      </p>
+
+      <!-- Formulário de autenticação -->
+      <form id="login-form">
+        <label for="username">Usuário</label>
+        <input
+          id="username"
+          name="username"
+          autocomplete="username"
+          required
+          minlength="3"
+          maxlength="40"
+          autocapitalize="none"
+          spellcheck="false"
+        >
+
+        <label for="password">Senha</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          maxlength="128"
+        >
+
+        <p
+          id="login-error"
+          class="feedback"
+          role="alert"
+          hidden
+        ></p>
+
+        <button
+          id="login-submit"
+          class="button primary"
+          type="submit"
+        >
+          Entrar no painel
+        </button>
+      </form>
+
+      <p class="login-help">
+        Use o usuário e a senha que você configurou para administrar o guia.
+      </p>
+    </section>
+
+    <a class="text-button" href="/">
+      ← Voltar ao guia público
+    </a>
+  </main>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Administração · Sá Conecta</title>
+
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/admin.css">
+  <script src="/static/admin.js" defer></script>
+</head>
+
+<body data-page="admin">
+  <a class="skip-link" href="#admin-main">
+    Pular para os contatos
+  </a>
+
+  <!-- Cabeçalho administrativo -->
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <span class="brand-symbol" aria-hidden="true">Sá</span>
+
+        <span>
+          Sá <strong>Conecta</strong>
+          <small>Administração do guia</small>
+        </span>
+      </a>
+
+      <nav aria-label="Navegação administrativa">
+        <a href="/" target="_blank" rel="noopener">
+          Ver guia público ↗
+        </a>
+
+        <button
+          id="logout"
+          class="button secondary"
+          type="button"
+        >
+          Sair
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Conteúdo principal do painel -->
+  <main class="container admin-main" id="admin-main">
+    <div class="admin-heading">
+      <div>
+        <p class="eyebrow">CUIDE DAS INFORMAÇÕES DO GUIA</p>
+        <h1>Gerenciar contatos</h1>
+        <p class="muted">Revise os dados antes de publicar no catálogo.</p>
+      </div>
+
+      <span id="admin-username" class="muted"></span>
+    </div>
+
+    <!-- Filtros por situação -->
+    <div
+      id="filters"
+      class="status-filters"
+      role="group"
+      aria-label="Filtrar por situação"
+    >
+      <button
+        class="status-filter"
+        data-status="pending"
+        aria-pressed="true"
+      >
+        <span>Pendentes</span>
+        <strong id="count-pending">—</strong>
+      </button>
+
+      <button
+        class="status-filter"
+        data-status="approved"
+        aria-pressed="false"
+      >
+        <span>Aprovados</span>
+        <strong id="count-approved">—</strong>
+      </button>
+
+      <button
+        class="status-filter"
+        data-status="rejected"
+        aria-pressed="false"
+      >
+        <span>Rejeitados</span>
+        <strong id="count-rejected">—</strong>
+      </button>
+
+      <button
+        class="status-filter"
+        data-status="all"
+        aria-pressed="false"
+      >
+        <span>Todos</span>
+        <strong id="count-all">—</strong>
+      </button>
+    </div>
+
+    <div class="admin-toolbar">
+      <div>
+        <label for="admin-search">Buscar contatos</label>
+        <input
+          id="admin-search"
+          type="search"
+          maxlength="120"
+          placeholder="Nome, categoria ou telefone"
+          autocomplete="off"
+        >
+      </div>
+
+      <button
+        id="reload"
+        class="button secondary"
+        type="button"
+      >
+        Atualizar lista
+      </button>
+    </div>
+
+    <p
+      id="admin-feedback"
+      class="feedback"
+      role="status"
+      aria-live="polite"
+      hidden
+    ></p>
+
+    <p
+      id="load-status"
+      class="muted"
+      role="status"
+      aria-live="polite"
+    >
+      Carregando contatos…
+    </p>
+
+    <section
+      id="records"
+      class="admin-records"
+      aria-label="Contatos cadastrados"
+    ></section>
+
+    <div id="admin-empty" class="empty-state" hidden>
+      <h2>Nenhum contato nesta seleção.</h2>
+      <p>Escolha outro filtro ou limpe a busca.</p>
+    </div>
+  </main>
+
+  <!-- Janela para editar um contato -->
+  <dialog id="edit-dialog" aria-labelledby="edit-title">
+    <div class="dialog-heading">
+      <span class="eyebrow">REVISÃO DO CADASTRO</span>
+
+      <button
+        class="close-button"
+        data-close
+        aria-label="Fechar edição"
+      >
+        ×
+      </button>
+    </div>
+
+    <h2 id="edit-title">Editar contato</h2>
+    <p id="edit-note" class="muted"></p>
+
+    <form id="edit-form" class="admin-form">
+      <label for="edit-name">Nome *</label>
+      <input
+        id="edit-name"
+        name="name"
+        required
+        minlength="2"
+        maxlength="100"
+      >
+
+      <label for="edit-category">Categoria *</label>
+      <select
+        id="edit-category"
+        name="category"
+        required
+      ></select>
+
+      <label for="edit-phone">Telefone com DDD</label>
+      <input
+        id="edit-phone"
+        name="phone"
+        type="tel"
+        maxlength="20"
+        placeholder="(00) 00000-0000"
+      >
+      <small>
+        Obrigatório para contatos reais. Use 10 ou 11 dígitos, sem o código 55.
+      </small>
+
+      <label for="edit-address">
+        Endereço ou região de atendimento *
+      </label>
+      <input
+        id="edit-address"
+        name="address"
+        required
+        minlength="3"
+        maxlength="160"
+      >
+
+      <label for="edit-hours">Horário de atendimento</label>
+      <input
+        id="edit-hours"
+        name="hours"
+        maxlength="100"
+      >
+
+      <label for="edit-description">Descrição *</label>
+      <textarea
+        id="edit-description"
+        name="description"
+        required
+        minlength="5"
+        maxlength="400"
+        rows="3"
+      ></textarea>
+
+      <label class="check">
+        <input
+          id="edit-whatsapp"
+          name="whatsapp"
+          type="checkbox"
+        >
+        Este telefone recebe mensagens pelo WhatsApp.
+      </label>
+
+      <p
+        id="edit-error"
+        class="feedback"
+        role="alert"
+        hidden
+      ></p>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="button secondary"
+          data-close
+        >
+          Cancelar
+        </button>
+
+        <button type="submit" class="button primary">
+          Salvar alterações
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Confirma aprovação, rejeição ou exclusão -->
+  <dialog
+    id="confirm-dialog"
+    aria-labelledby="confirm-title"
+    aria-describedby="confirm-description"
+  >
+    <h2 id="confirm-title"></h2>
+    <p id="confirm-description"></p>
+
+    <p
+      id="confirm-error"
+      class="feedback"
+      role="alert"
+      hidden
+    ></p>
+
+    <div class="form-actions">
+      <button
+        class="button secondary"
+        type="button"
+        data-close
+      >
+        Cancelar
+      </button>
+
+      <button
+        id="confirm-action"
+        class="button primary"
+        type="button"
+      >
+        Confirmar
+      </button>
+    </div>
+  </dialog>
+</body>
+</html>

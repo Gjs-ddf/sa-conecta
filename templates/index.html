@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="Guia colaborativo de comércios e serviços de Coronel João Sá, Bahia. Protótipo acadêmico."
+  >
+  <title>Sá Conecta — Guia de comércios e serviços</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- Cabeçalho e navegação -->
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Sá Conecta, início">
+        <span class="brand-symbol" aria-hidden="true">Sá</span>
+        <span>
+          Sá <strong>Conecta</strong>
+          <small>Coronel João Sá · Bahia</small>
+        </span>
+      </a>
+
+      <nav aria-label="Navegação principal">
+        <a href="#catalogo">Explorar</a>
+        <button class="button primary" data-open-form>+ Sugerir contato</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <!-- Apresentação e busca -->
+    <section class="intro container" aria-labelledby="titulo">
+      <p class="eyebrow">GUIA COLABORATIVO LOCAL</p>
+      <h1 id="titulo">
+        O que você precisa,<br>
+        <span>mais perto de você.</span>
+      </h1>
+      <p class="intro-text">
+        Encontre comércios e serviços em Coronel João Sá.
+      </p>
+
+      <form id="search-form" class="search-bar" role="search">
+        <div class="search-field">
+          <label for="search">O que você está procurando?</label>
+          <input
+            id="search"
+            type="search"
+            placeholder="Nome, serviço ou palavra-chave"
+            autocomplete="off"
+            maxlength="120"
+          >
+        </div>
+
+        <div class="category-field">
+          <label for="category">Categoria</label>
+          <select id="category">
+            <option value="">Todas as categorias</option>
+          </select>
+        </div>
+
+        <button class="button primary" type="submit">Buscar</button>
+      </form>
+    </section>
+
+    <!-- Catálogo de estabelecimentos -->
+    <section
+      class="container catalog"
+      id="catalogo"
+      aria-labelledby="catalog-title"
+    >
+      <div id="demo-notice" class="demo-notice" hidden>
+        <strong>Exemplos de demonstração</strong>
+        <span>
+          Os cards marcados como fictícios servem para testar o guia e não têm
+          contatos reais.
+        </span>
+      </div>
+
+      <div id="load-error" class="demo-notice" role="alert" hidden>
+        <span>
+          Não foi possível carregar o catálogo. Confira se o servidor está
+          funcionando.
+        </span>
+        <button id="retry-load" class="button secondary" type="button">
+          Tentar novamente
+        </button>
+      </div>
+
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">EXPLORE A CIDADE</p>
+          <h2 id="catalog-title">Comércios e serviços</h2>
+        </div>
+        <p id="result-count" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="catalog-layout">
+        <aside class="sidebar">
+          <h3>Encontre por categoria</h3>
+          <div
+            id="category-buttons"
+            class="category-buttons"
+            role="group"
+            aria-label="Filtrar por categoria"
+          ></div>
+
+          <div class="collaborate">
+            <span class="eyebrow">FEITO EM COMUNIDADE</span>
+            <h3>Seu negócio também pode estar aqui.</h3>
+            <p>
+              Sugira um comércio ou serviço para ajudar a construir o guia.
+            </p>
+            <button class="text-button" data-open-form>
+              Sugerir um contato <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </aside>
+
+        <div>
+          <div id="cards" class="cards"></div>
+
+          <div id="empty-state" class="empty-state" hidden>
+            <h3>Nenhum resultado por aqui.</h3>
+            <p>Tente outra palavra ou escolha uma categoria diferente.</p>
+            <button id="clear-filters" class="button secondary">
+              Limpar filtros
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <noscript>
+        <p>
+          Ative o JavaScript no navegador para carregar os estabelecimentos e
+          utilizar a busca.
+        </p>
+      </noscript>
+    </section>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>Sá Conecta</strong>
+        <p>Um guia construído com a comunidade.</p>
+      </div>
+      <p>
+        Projeto extensionista · ADS / UNINTER<br>
+        Projeto acadêmico — sem vínculo com a prefeitura.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Janela de detalhes do estabelecimento -->
+  <dialog id="details-dialog" aria-labelledby="details-title">
+    <div class="dialog-heading">
+      <span class="eyebrow">CONHEÇA O ESTABELECIMENTO</span>
+      <button class="close-button" data-close aria-label="Fechar detalhes">
+        ×
+      </button>
+    </div>
+
+    <h2 id="details-title"></h2>
+    <p id="details-category" class="muted"></p>
+    <p id="details-description"></p>
+    <dl id="details-info" class="details-info"></dl>
+    <p id="details-demo" class="demo-notice" hidden>
+      Exemplo fictício. Telefone e WhatsApp não disponíveis.
+    </p>
+    <div id="contact-actions" class="form-actions"></div>
+    <button class="button secondary" data-close>Voltar ao guia</button>
+  </dialog>
+
+  <!-- Janela para sugerir um novo contato -->
+  <dialog id="suggestion-dialog" aria-labelledby="suggestion-title">
+    <div class="dialog-heading">
+      <span class="eyebrow">COLABORE COM O GUIA</span>
+      <button class="close-button" data-close aria-label="Fechar formulário">
+        ×
+      </button>
+    </div>
+
+    <h2 id="suggestion-title">Sugerir um contato</h2>
+    <p class="muted" id="form-explanation">
+      Envie os dados de um comércio ou serviço. As informações serão salvas e
+      só aparecerão no guia após revisão.
+    </p>
+
+    <form id="suggestion-form" aria-describedby="form-explanation">
+      <label for="business-name">
+        Nome do estabelecimento ou profissional *
+      </label>
+      <input
+        id="business-name"
+        name="name"
+        required
+        maxlength="100"
+        placeholder="Ex.: Oficina Exemplo"
+      >
+
+      <div class="form-row">
+        <div>
+          <label for="business-category">Categoria *</label>
+          <select id="business-category" name="category" required>
+            <option value="">Selecione</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="business-phone">Telefone com DDD *</label>
+          <input
+            id="business-phone"
+            name="phone"
+            type="tel"
+            required
+            maxlength="16"
+            placeholder="(00) 00000-0000"
+            aria-describedby="phone-hint"
+          >
+          <small id="phone-hint">10 ou 11 dígitos, incluindo o DDD.</small>
+        </div>
+      </div>
+
+      <label for="business-address">Endereço ou região de atendimento *</label>
+      <input
+        id="business-address"
+        name="address"
+        required
+        maxlength="160"
+        placeholder="Rua, número e bairro, ou região atendida"
+      >
+
+      <label for="business-hours">Horário de atendimento</label>
+      <input
+        id="business-hours"
+        name="hours"
+        maxlength="100"
+        placeholder="Ex.: segunda a sexta, das 8h às 18h"
+      >
+
+      <label for="business-description">
+        Descrição do comércio ou serviço *
+      </label>
+      <textarea
+        id="business-description"
+        name="description"
+        required
+        maxlength="400"
+        rows="3"
+        placeholder="Quais produtos ou serviços são oferecidos?"
+      ></textarea>
+
+      <label class="checkbox-label">
+        <input id="business-whatsapp" name="whatsapp" type="checkbox">
+        Este telefone recebe mensagens pelo WhatsApp.
+      </label>
+
+      <label class="checkbox-label">
+        <input id="business-consent" name="consent" type="checkbox" required>
+        Confirmo que posso fornecer estas informações de contato para
+        publicação no guia.
+      </label>
+
+      <p id="form-status" role="status" aria-live="polite"></p>
+
+      <div class="form-actions">
+        <button class="button secondary" type="button" data-close>
+          Cancelar
+        </button>
+        <button id="submit-suggestion" class="button primary" type="submit">
+          Enviar sugestão
+        </button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
