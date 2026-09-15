@@ -12,7 +12,7 @@ import hmac
 import os
 import re
 from typing import Literal
-from urllib.parse import urlsplit
+
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import RedirectResponse
 from pydantic import (
@@ -148,27 +148,28 @@ def make_admin_router(db_path, templates):
 
         return current
 
-def same_origin(request: Request):
-    origin = request.headers.get("origin")
+    def same_origin(request: Request):
+        """
+        Recusa solicitações identificadas como vindas de outro site.
 
-    if origin:
-        origin_url = urlsplit(origin)
-        request_host = request.headers.get("host", "").lower()
+        Quando o cabeçalho Origin está presente, compara seu endereço
+        com a origem da aplicação, incluindo protocolo e porta.
+        """
 
-        if (
-            origin_url.scheme not in {"http", "https"}
-            or origin_url.netloc.lower() != request_host
-        ):
+        origin = request.headers.get("origin")
+        application_origin = str(request.base_url).rstrip("/")
+
+        if origin and origin != application_origin:
             raise HTTPException(
-                403,
-                "Origem da solicitação não permitida."
+                status_code=403,
+                detail="Origem da solicitação não permitida.",
             )
 
-    if request.headers.get("sec-fetch-site") == "cross-site":
-        raise HTTPException(
-            403,
-            "Origem da solicitação não permitida."
-        )
+        if request.headers.get("sec-fetch-site") == "cross-site":
+            raise HTTPException(
+                status_code=403,
+                detail="Origem da solicitação não permitida.",
+            )
 
     def mutation(request: Request, current=Depends(session)):
         """
