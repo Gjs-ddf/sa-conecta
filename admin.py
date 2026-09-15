@@ -157,7 +157,9 @@ def make_admin_router(db_path, templates):
         """
 
         origin = request.headers.get("origin")
-        application_origin = str(request.base_url).rstrip("/")
+        application_origin = os.getenv(
+            "SA_PUBLIC_ORIGIN", str(request.base_url)
+        ).rstrip("/")
 
         if origin and origin != application_origin:
             raise HTTPException(
